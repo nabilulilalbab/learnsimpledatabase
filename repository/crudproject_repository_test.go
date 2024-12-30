@@ -81,3 +81,15 @@ func TestProjectCrudUpdate(t *testing.T) {
 	// Cetak hasil untuk visibilitas tambahan
 	t.Logf("Proyek Diperbarui: %+v", hasil)
 }
+
+
+
+func TestProjectCrudDelete(t *testing.T)  {
+  ctx := context.Background()
+  repository := NewCrudProjectRepository(crud.GetConnection())
+  err := repository.Delete(ctx, 2)
+  if err != nil {
+    panic(err)
+  }
+  fmt.Println("done delete")
+}

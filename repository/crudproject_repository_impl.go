@@ -66,23 +66,6 @@ func (repository *crudprojectRepositoryImpl) FindAll(ctx context.Context) ([]ent
 	return projectcruds, nil
 }
 
-// func (repository *crudprojectRepositoryImpl) Update(ctx context.Context, projectcrud entity.Crudproject) (entity.Crudproject, error) {
-// 	script := "UPDATE projectcrud SET done = ?, task = ? WHERE id = ?"
-// 	result, err := repository.DB.ExecContext(ctx, script, projectcrud.Done, projectcrud.Task, projectcrud.Id)
-// 	if err != nil {
-// 		return entity.Crudproject{}, err
-// 	}
-// 	rowsAffected, err := result.RowsAffected()
-// 	if err != nil {
-// 		return entity.Crudproject{}, err
-// 	}
-// 	if rowsAffected == 0 {
-// 		return entity.Crudproject{}, errors.New("data not found")
-// 	}
-// 	return projectcrud, nil
-// }
-//
-
 func (repository *crudprojectRepositoryImpl) Update(ctx context.Context, projectcrud entity.Crudproject) (entity.Crudproject, error) {
 	// Correct table name and include all fields
 	script := "UPDATE crudproject SET name = ?, done = ?, task = ? WHERE id = ?"
@@ -123,5 +106,14 @@ func (repository *crudprojectRepositoryImpl) Update(ctx context.Context, project
 }
 
 func (repository *crudprojectRepositoryImpl) Delete(ctx context.Context, id int32) error {
-	panic("implement me")
+  script := "DELETE FROM crudproject WHERE id = ? "
+  result, err := repository.DB.ExecContext(ctx, script, id)
+  if err != nil {
+    return fmt.Errorf("error Deleting projecgt : %w", err)
+  }
+  rowsAffected ,err := result.RowsAffected()
+  if rowsAffected == 0 {
+    return fmt.Errorf("no project found withid %d", id)
+  }
+  return nil
 }
